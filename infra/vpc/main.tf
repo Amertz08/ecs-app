@@ -52,6 +52,10 @@ resource "aws_nat_gateway" "private" {
 
 resource "aws_eip" "nat" {
   vpc = true
+  tags = {
+    Name = "ecs-app-nat-eip"
+    managed = "Terraform"
+  }
 }
 
 resource "aws_route_table" "public" {
