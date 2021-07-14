@@ -10,9 +10,9 @@ data "terraform_remote_state" "vpc_state" {
 }
 
 resource "aws_launch_template" "main" {
-  name = "ecs-app-lt"
+  name          = "ecs-app-lt"
   instance_type = "t2.micro"
-  image_id = "ami-091aa67fccd794d5f"
+  image_id      = "ami-091aa67fccd794d5f"
 
   tags = {
     Name    = "ECS App"
@@ -21,9 +21,9 @@ resource "aws_launch_template" "main" {
 }
 
 resource "aws_autoscaling_group" "main" {
-  max_size = 3
-  min_size = 0
-  desired_capacity = 0
+  max_size            = 3
+  min_size            = 0
+  desired_capacity    = 0
   vpc_zone_identifier = [data.terraform_remote_state.vpc_state.outputs.private_subnet_id]
 
   launch_template {
@@ -39,6 +39,6 @@ resource "aws_ecs_capacity_provider" "main" {
 }
 
 resource "aws_ecs_cluster" "main" {
-  name = "ecs-app-cluster"
+  name               = "ecs-app-cluster"
   capacity_providers = [aws_ecs_capacity_provider.main.name]
 }
