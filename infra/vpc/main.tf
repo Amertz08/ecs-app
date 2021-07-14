@@ -3,6 +3,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "app_cloud" {
+  # 10.0.0.0 - 10.0.255.255
   cidr_block = "10.0.0.0/16"
 
   tags = {
@@ -12,7 +13,8 @@ resource "aws_vpc" "app_cloud" {
 }
 
 resource "aws_subnet" "public" {
-  vpc_id                  = aws_vpc.app_cloud.id
+  vpc_id = aws_vpc.app_cloud.id
+  # 10.0.0.0 - 10.0.0.255
   cidr_block              = "10.0.0.0/24"
   map_public_ip_on_launch = true
 
@@ -22,9 +24,23 @@ resource "aws_subnet" "public" {
   }
 }
 
+resource "aws_security_group" "public-sg" {
+  name        = "allow_ssh"
+  description = "Allow SSH"
+  vpc_id      = aws_vpc.app_cloud.id
+}
+
+resource "aws_security_group_rule" "public-sg-ssh" {
+  from_port         = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.public-sg.id
+  to_port           = 22
+  type              = "ingress"
+}
 
 resource "aws_subnet" "private" {
-  vpc_id     = aws_vpc.app_cloud.id
+  vpc_id = aws_vpc.app_cloud.id
+  # 10.0.1.0 - 10.0.1.255
   cidr_block = "10.0.1.0/24"
 
   tags = {
