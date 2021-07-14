@@ -14,10 +14,6 @@ resource "aws_launch_template" "main" {
   instance_type = "t2.micro"
   image_id = "ami-091aa67fccd794d5f"
 
-  placement {
-    availability_zone = "us-east-1b"
-  }
-
   tags = {
     Name    = "ECS App"
     managed = "Terraform"
