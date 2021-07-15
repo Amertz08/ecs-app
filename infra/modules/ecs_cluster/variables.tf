@@ -37,3 +37,8 @@ variable "public_subnet_cidr_blocks" {
   type        = list(string)
   description = "List of Public Subnets to allow SSH from"
 }
+
+variable "vpc_id" {
+  type        = string
+  description = "VPC ID for security groups"
+}

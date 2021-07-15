@@ -20,3 +20,7 @@ output "private_subnet_ids" {
 output "public_subnet_cidr_blocks" {
   value = module.ecs_app.public_subnet_cidr_blocks
 }
+
+output "vpc_id" {
+  value = module.ecs_app.vpc_id
+}

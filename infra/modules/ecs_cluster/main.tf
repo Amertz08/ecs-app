@@ -1,5 +1,9 @@
 resource "aws_security_group" "instance_sg" {
   name_prefix = "${var.name}-sg-"
+  vpc_id      = var.vpc_id
+  tags = {
+    Name = "${var.name}-instance-sg"
+  }
 }
 
 resource "aws_security_group_rule" "ssh" {
@@ -9,6 +13,15 @@ resource "aws_security_group_rule" "ssh" {
   to_port           = 22
   type              = "ingress"
   cidr_blocks       = var.public_subnet_cidr_blocks
+}
+
+resource "aws_security_group_rule" "outbound_all" {
+  from_port         = 0
+  protocol          = "-1"
+  security_group_id = aws_security_group.instance_sg.id
+  to_port           = 0
+  type              = "egress"
+  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_launch_template" "main" {
@@ -31,7 +44,8 @@ resource "aws_autoscaling_group" "main" {
   vpc_zone_identifier = var.vpc_zone_identifier
 
   launch_template {
-    id = aws_launch_template.main.id
+    id      = aws_launch_template.main.id
+    version = aws_launch_template.main.latest_version
   }
   tag {
     key                 = "AmazonECSManaged"
@@ -40,7 +54,7 @@ resource "aws_autoscaling_group" "main" {
   }
   tag {
     key                 = "Name"
-    value               = var.name
+    value               = "${var.name}-cluster"
     propagate_at_launch = true
   }
 }
