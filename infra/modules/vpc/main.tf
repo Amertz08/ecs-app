@@ -47,6 +47,25 @@ resource "aws_internet_gateway" "this" {
   }
 }
 
+resource "aws_eip" "nat" {
+  count = var.enable_nat ? length(aws_subnet.public) : 0
+  vpc   = true
+  tags = {
+    Name    = "${var.name}-nat-eip-${count.index}"
+    managed = "Terraform"
+  }
+}
+
+resource "aws_nat_gateway" "this" {
+  count         = var.enable_nat ? length(aws_subnet.public) : 0
+  allocation_id = aws_eip.nat[count.index].id
+  subnet_id     = aws_subnet.public[count.index].id
+  tags = {
+    Name    = "${var.name}-nat-${count.index}"
+    managed = "Terraform"
+  }
+}
+
 resource "aws_route_table" "public" {
   count  = length(aws_subnet.public)
   vpc_id = aws_vpc.this.id
@@ -56,11 +75,18 @@ resource "aws_route_table" "public" {
   }
 }
 
-resource "aws_route" "public" {
+resource "aws_route" "public_ig_route" {
   count                  = length(aws_subnet.public)
   route_table_id         = aws_route_table.public[count.index].id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.this.id
+}
+
+resource "aws_route" "public_nat_route" {
+  count                  = var.enable_nat ? length(aws_subnet.public) : 0
+  route_table_id         = aws_route_table.public[count.index].id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.this[count.index].id
 }
 
 resource "aws_route_table_association" "public" {
@@ -82,25 +108,6 @@ resource "aws_subnet" "private" {
   }
 }
 
-resource "aws_eip" "nat" {
-  count = var.enable_nat ? length(aws_subnet.public) : 0
-  vpc   = true
-  tags = {
-    Name    = "${var.name}-nat-eip-${count.index}"
-    managed = "Terraform"
-  }
-}
-
-resource "aws_nat_gateway" "this" {
-  count         = var.enable_nat ? length(aws_subnet.public) : 0
-  allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = aws_subnet.public[count.index].id
-  tags = {
-    Name    = "${var.name}-nat-${count.index}"
-    managed = "Terraform"
-  }
-}
-
 resource "aws_route_table" "private" {
   count  = length(aws_subnet.private)
   vpc_id = aws_vpc.this.id
@@ -110,7 +117,7 @@ resource "aws_route_table" "private" {
   }
 }
 
-resource "aws_route" "private_nat" {
+resource "aws_route" "private_nat_route" {
   count                  = var.enable_nat ? length(aws_subnet.private) : 0
   route_table_id         = aws_route_table.private[count.index].id
   destination_cidr_block = "0.0.0.0/0"
