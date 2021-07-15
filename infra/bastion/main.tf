@@ -36,6 +36,7 @@ resource "aws_security_group_rule" "outbound_all" {
 }
 
 resource "aws_instance" "bastion" {
+  count                       = 0
   ami                         = "ami-0dc2d3e4c0f9ebd18"
   instance_type               = "t2.micro"
   key_name                    = "adam-mbp"
@@ -45,5 +46,19 @@ resource "aws_instance" "bastion" {
 
   tags = {
     Name = "Bastion Host"
+  }
+}
+
+resource "aws_instance" "bastion_two" {
+  count                       = 0
+  ami                         = "ami-0dc2d3e4c0f9ebd18"
+  instance_type               = "t2.micro"
+  key_name                    = "adam-mbp"
+  associate_public_ip_address = true
+  subnet_id                   = data.terraform_remote_state.vpc_state.outputs.public_subnet_ids[1]
+  security_groups             = [aws_security_group.bastion_sg.id]
+
+  tags = {
+    Name = "Bastion Host2"
   }
 }
