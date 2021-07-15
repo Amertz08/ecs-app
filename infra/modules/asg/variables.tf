@@ -54,3 +54,9 @@ variable "is_public" {
   default     = false
   description = "Whether or not to associate a public IP"
 }
+
+variable "asg_tags" {
+  type        = list(map(string))
+  default     = []
+  description = "Tags to add to ASG"
+}

@@ -52,14 +52,12 @@ resource "aws_autoscaling_group" "main" {
     id      = aws_launch_template.main.id
     version = aws_launch_template.main.latest_version
   }
-  tag {
-    key                 = "AmazonECSManaged"
-    value               = ""
-    propagate_at_launch = true
-  }
-  tag {
-    key                 = "Name"
-    value               = "${var.name}-cluster"
-    propagate_at_launch = true
-  }
+
+  tags = concat([
+    {
+      key                 = "Name"
+      value               = "${var.name}-cluster"
+      propagate_at_launch = true
+    }
+  ], var.asg_tags)
 }

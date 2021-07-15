@@ -11,6 +11,11 @@ module "ecs_asg" {
   min_size            = var.min_size
   vpc_id              = var.vpc_id
   vpc_zone_identifier = var.vpc_zone_identifier
+  asg_tags = concat(var.asg_tags, [{
+    key                 = "AmazonECSManaged"
+    value               = ""
+    propagate_at_launch = true
+  }])
 }
 
 resource "aws_ecs_capacity_provider" "main" {

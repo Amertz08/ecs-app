@@ -42,3 +42,9 @@ variable "vpc_id" {
   type        = string
   description = "VPC ID for security groups"
 }
+
+variable "asg_tags" {
+  type        = list(map(string))
+  default     = []
+  description = "List of tags to apply to ASG"
+}
