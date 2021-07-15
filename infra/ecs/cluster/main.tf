@@ -9,11 +9,17 @@ data "terraform_remote_state" "vpc_state" {
   }
 }
 
+variable "instance_count" {
+  type    = number
+  default = 0
+}
+
 module "ecs-app-cluster" {
+
   source                    = "../../modules/ecs_cluster"
   name                      = "apps"
-  desired_capacity          = 0
-  min_size                  = 0
+  desired_capacity          = var.instance_count
+  min_size                  = var.instance_count
   max_size                  = 4
   instance_type             = "t2.micro"
   key_name                  = "adam-mbp"

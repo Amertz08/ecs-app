@@ -9,6 +9,11 @@ data "terraform_remote_state" "vpc_state" {
   }
 }
 
+variable "instance_count" {
+  type    = number
+  default = 0
+}
+
 module "bastion_asg" {
   source   = "../modules/asg"
   name     = "bastion"
@@ -17,8 +22,8 @@ module "bastion_asg" {
   is_public           = true
   instance_type       = "t2.micro"
   key_name            = "adam-mbp"
-  desired_capacity    = 0
-  min_size            = 0
+  desired_capacity    = var.instance_count
+  min_size            = var.instance_count
   max_size            = 4
   ssh_cidr_blocks     = ["0.0.0.0/0"]
   vpc_id              = data.terraform_remote_state.vpc_state.outputs.vpc_id
