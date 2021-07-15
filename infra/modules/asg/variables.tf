@@ -60,3 +60,15 @@ variable "asg_tags" {
   default     = []
   description = "Tags to add to ASG"
 }
+
+variable "ebs_optimized" {
+  type        = bool
+  default     = false
+  description = "EBS optimization flag"
+}
+
+variable "monitoring_enabled" {
+  type        = bool
+  default     = false
+  description = "Instance monitoring flag"
+}

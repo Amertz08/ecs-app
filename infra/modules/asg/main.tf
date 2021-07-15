@@ -30,6 +30,11 @@ resource "aws_launch_template" "main" {
   image_id               = var.image_id
   key_name               = var.key_name
   update_default_version = true
+  ebs_optimized          = var.ebs_optimized
+
+  monitoring {
+    enabled = var.monitoring_enabled
+  }
 
   network_interfaces {
     associate_public_ip_address = var.is_public
