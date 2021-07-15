@@ -27,9 +27,9 @@ resource "aws_security_group_rule" "outbound_all" {
 resource "aws_security_group_rule" "ingress_rules" {
   count             = length(var.ingress_rules)
   type              = "ingress"
+  security_group_id = aws_security_group.instance_sg.id
   from_port         = var.ingress_rules[count.index].from_port
   protocol          = var.ingress_rules[count.index].protocol
-  security_group_id = aws_security_group.instance_sg.id
   to_port           = var.ingress_rules[count.index].to_port
   //  cidr_blocks       = lookup(var.ingress_rules[count.index], "cidr_blocks", var.default_list)
   description = lookup(var.ingress_rules[count.index], "description", "")
