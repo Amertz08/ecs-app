@@ -30,10 +30,10 @@ resource "aws_launch_template" "main" {
   image_id               = var.image_id
   key_name               = var.key_name
   update_default_version = true
-  vpc_security_group_ids = [aws_security_group.instance_sg.id]
 
   network_interfaces {
     associate_public_ip_address = var.is_public
+    security_groups             = [aws_security_group.instance_sg.id]
   }
 
   tags = {

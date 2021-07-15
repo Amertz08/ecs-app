@@ -9,56 +9,18 @@ data "terraform_remote_state" "vpc_state" {
   }
 }
 
-resource "aws_security_group" "bastion_sg" {
-  vpc_id = data.terraform_remote_state.vpc_state.outputs.vpc_id
+module "bastion_asg" {
+  source   = "../modules/asg"
+  name     = "bastion"
+  image_id = "ami-0dc2d3e4c0f9ebd18"
 
-  tags = {
-    Name = "bastion-instance-sg"
-  }
-}
-
-resource "aws_security_group_rule" "ssh" {
-  from_port         = 22
-  protocol          = "tcp"
-  to_port           = 22
-  type              = "ingress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.bastion_sg.id
-}
-
-resource "aws_security_group_rule" "outbound_all" {
-  from_port         = 0
-  protocol          = "-1"
-  security_group_id = aws_security_group.bastion_sg.id
-  to_port           = 0
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-}
-
-resource "aws_instance" "bastion" {
-  count                       = 0
-  ami                         = "ami-0dc2d3e4c0f9ebd18"
-  instance_type               = "t2.micro"
-  key_name                    = "adam-mbp"
-  associate_public_ip_address = true
-  subnet_id                   = data.terraform_remote_state.vpc_state.outputs.public_subnet_ids[0]
-  security_groups             = [aws_security_group.bastion_sg.id]
-
-  tags = {
-    Name = "Bastion Host"
-  }
-}
-
-resource "aws_instance" "bastion_two" {
-  count                       = 0
-  ami                         = "ami-0dc2d3e4c0f9ebd18"
-  instance_type               = "t2.micro"
-  key_name                    = "adam-mbp"
-  associate_public_ip_address = true
-  subnet_id                   = data.terraform_remote_state.vpc_state.outputs.public_subnet_ids[1]
-  security_groups             = [aws_security_group.bastion_sg.id]
-
-  tags = {
-    Name = "Bastion Host2"
-  }
+  is_public           = true
+  instance_type       = "t2.micro"
+  key_name            = "adam-mbp"
+  desired_capacity    = 2
+  min_size            = 2
+  max_size            = 4
+  ssh_cidr_blocks     = ["0.0.0.0/0"]
+  vpc_id              = data.terraform_remote_state.vpc_state.outputs.vpc_id
+  vpc_zone_identifier = data.terraform_remote_state.vpc_state.outputs.public_subnet_ids
 }
