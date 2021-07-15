@@ -4,7 +4,7 @@ module "ecs_asg" {
   key_name = var.key_name
   image_id = "ami-091aa67fccd794d5f"
 
-  cidr_blocks         = var.public_subnet_cidr_blocks
+  ssh_cidr_blocks     = var.public_subnet_cidr_blocks
   desired_capacity    = var.desired_capacity
   instance_type       = var.instance_type
   max_size            = var.max_size

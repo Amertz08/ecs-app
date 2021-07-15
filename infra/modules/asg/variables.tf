@@ -44,7 +44,13 @@ variable "vpc_id" {
   description = "VPC ID for security groups"
 }
 
-variable "cidr_blocks" {
+variable "ssh_cidr_blocks" {
   type        = list(string)
   description = "CIDR blocks for the SG"
+}
+
+variable "is_public" {
+  type        = bool
+  default     = false
+  description = "Whether or not to associate a public IP"
 }

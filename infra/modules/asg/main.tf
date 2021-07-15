@@ -12,7 +12,7 @@ resource "aws_security_group_rule" "ssh" {
   security_group_id = aws_security_group.instance_sg.id
   to_port           = 22
   type              = "ingress"
-  cidr_blocks       = var.cidr_blocks
+  cidr_blocks       = var.ssh_cidr_blocks
 }
 
 resource "aws_security_group_rule" "outbound_all" {
@@ -31,6 +31,10 @@ resource "aws_launch_template" "main" {
   key_name               = var.key_name
   update_default_version = true
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
+
+  network_interfaces {
+    associate_public_ip_address = var.is_public
+  }
 
   tags = {
     Name    = var.name
