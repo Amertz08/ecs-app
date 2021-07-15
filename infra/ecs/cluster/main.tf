@@ -12,8 +12,8 @@ data "terraform_remote_state" "vpc_state" {
 module "ecs-app-cluster" {
   source                    = "../../modules/ecs_cluster"
   name                      = "apps"
-  desired_capacity          = 0
-  min_size                  = 0
+  desired_capacity          = 2
+  min_size                  = 2
   max_size                  = 4
   instance_type             = "t2.micro"
   key_name                  = "adam-mbp"
