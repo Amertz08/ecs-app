@@ -72,3 +72,9 @@ variable "monitoring_enabled" {
   default     = false
   description = "Instance monitoring flag"
 }
+
+variable "ingress_rules" {
+  type        = list(map(string))
+  default     = []
+  description = "Ingress rules"
+}
