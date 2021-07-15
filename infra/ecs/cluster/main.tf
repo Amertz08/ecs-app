@@ -29,6 +29,16 @@ resource "aws_autoscaling_group" "main" {
   launch_template {
     id = aws_launch_template.main.id
   }
+  tag {
+    key                 = "AmazonECSManaged"
+    value               = ""
+    propagate_at_launch = true
+  }
+  tag {
+    key                 = "Name"
+    value               = "ecs-app"
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_ecs_capacity_provider" "main" {
