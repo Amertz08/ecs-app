@@ -21,7 +21,7 @@ resource "aws_launch_template" "main" {
 }
 
 resource "aws_autoscaling_group" "main" {
-  max_size            = 3
+  max_size            = 4
   min_size            = 0
   desired_capacity    = 0
   vpc_zone_identifier = [data.terraform_remote_state.vpc_state.outputs.private_subnet_id]
