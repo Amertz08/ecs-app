@@ -17,8 +17,8 @@ module "bastion_asg" {
   is_public           = true
   instance_type       = "t2.micro"
   key_name            = "adam-mbp"
-  desired_capacity    = 2
-  min_size            = 2
+  desired_capacity    = 0
+  min_size            = 0
   max_size            = 4
   ssh_cidr_blocks     = ["0.0.0.0/0"]
   vpc_id              = data.terraform_remote_state.vpc_state.outputs.vpc_id
