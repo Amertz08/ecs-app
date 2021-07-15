@@ -16,3 +16,7 @@ module "ecs_app" {
 output "private_subnet_ids" {
   value = module.ecs_app.private_subnet_ids
 }
+
+output "public_subnet_cidr_blocks" {
+  value = module.ecs_app.public_subnet_cidr_blocks
+}

@@ -1,8 +1,22 @@
+resource "aws_security_group" "instance_sg" {
+  name_prefix = "${var.name}-sg-"
+}
+
+resource "aws_security_group_rule" "ssh" {
+  from_port         = 22
+  protocol          = "tcp"
+  security_group_id = aws_security_group.instance_sg.id
+  to_port           = 22
+  type              = "ingress"
+  cidr_blocks       = var.public_subnet_cidr_blocks
+}
+
 resource "aws_launch_template" "main" {
-  name          = "${var.name}-lt"
-  instance_type = var.instance_type
-  image_id      = "ami-091aa67fccd794d5f"
-  key_name      = var.key_name
+  name                   = "${var.name}-lt"
+  instance_type          = var.instance_type
+  image_id               = "ami-091aa67fccd794d5f"
+  key_name               = var.key_name
+  vpc_security_group_ids = [aws_security_group.instance_sg.id]
 
   tags = {
     Name    = var.name

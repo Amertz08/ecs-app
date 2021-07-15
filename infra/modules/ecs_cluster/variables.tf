@@ -32,3 +32,8 @@ variable "key_name" {
   type        = string
   description = "Key to use for instances"
 }
+
+variable "public_subnet_cidr_blocks" {
+  type        = list(string)
+  description = "List of Public Subnets to allow SSH from"
+}
