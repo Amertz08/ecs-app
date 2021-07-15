@@ -82,13 +82,6 @@ resource "aws_route" "public_ig_route" {
   gateway_id             = aws_internet_gateway.this.id
 }
 
-resource "aws_route" "public_nat_route" {
-  count                  = var.enable_nat ? length(aws_subnet.public) : 0
-  route_table_id         = aws_route_table.public[count.index].id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.this[count.index].id
-}
-
 resource "aws_route_table_association" "public" {
   count          = length(aws_subnet.public)
   route_table_id = aws_route_table.public[count.index].id
