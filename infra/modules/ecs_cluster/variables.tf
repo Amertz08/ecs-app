@@ -27,3 +27,8 @@ variable "instance_type" {
   type        = string
   description = "Launch template instance type"
 }
+
+variable "key_name" {
+  type        = string
+  description = "Key to use for instances"
+}

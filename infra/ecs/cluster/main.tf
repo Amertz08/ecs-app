@@ -16,5 +16,6 @@ module "ecs-app-cluster" {
   min_size            = 0
   max_size            = 4
   instance_type       = "t2.micro"
+  key_name            = "adam-mbp"
   vpc_zone_identifier = data.terraform_remote_state.vpc_state.outputs.private_subnet_ids
 }

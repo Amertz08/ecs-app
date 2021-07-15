@@ -12,3 +12,7 @@ module "ecs_app" {
   private_cidr_blocks = ["10.0.1.0/24", "10.0.3.0/24"]
   availability_zones  = ["us-east-1a", "us-east-1b"]
 }
+
+output "private_subnet_ids" {
+  value = module.ecs_app.private_subnet_ids
+}

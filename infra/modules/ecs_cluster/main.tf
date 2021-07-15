@@ -2,6 +2,7 @@ resource "aws_launch_template" "main" {
   name          = "${var.name}-lt"
   instance_type = var.instance_type
   image_id      = "ami-091aa67fccd794d5f"
+  key_name      = var.key_name
 
   tags = {
     Name    = var.name
