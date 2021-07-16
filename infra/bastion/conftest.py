@@ -1,4 +1,5 @@
 def pytest_addoption(parser):
+    # TODO: just use a config file
     parser.addoption("--pem-key-path")
     parser.addoption("--bastion-ips", action="append")
 
