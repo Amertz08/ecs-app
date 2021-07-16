@@ -3,10 +3,9 @@ import pytest
 
 
 class SSHManager:
-    def __init__(self, pkey: paramiko.RSAKey):
+    def __init__(self, client: paramiko.SSHClient, pkey: paramiko.RSAKey):
+        self.client = client
         self.pkey = pkey
-        self.client = paramiko.SSHClient()
-        self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
     def __enter__(self):
         return self
@@ -15,6 +14,7 @@ class SSHManager:
         self.client.connect(
             hostname=hostname, username=username, pkey=self.pkey, timeout=5
         )
+        return self.client
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.client.close()
@@ -23,8 +23,10 @@ class SSHManager:
 @pytest.fixture()
 def ssh_manager(request) -> SSHManager:
     key_path = request.config.getoption("--pem-key-path")
+    client = paramiko.SSHClient()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     pkey = paramiko.RSAKey.from_private_key_file(key_path)
-    man = SSHManager(pkey)
+    man = SSHManager(client=client, pkey=pkey)
     return man
 
 
