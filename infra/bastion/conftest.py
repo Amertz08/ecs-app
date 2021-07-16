@@ -1,10 +1,9 @@
 def pytest_addoption(parser):
-    # TODO: just use a config file
     parser.addoption("--pem-key-path")
-    parser.addoption("--bastion-ips", action="append")
+    parser.addini("bastion_ips", type="linelist", help="Bastion IP addresses")
 
 
 def pytest_generate_tests(metafunc):
     if "bastion_ip" in metafunc.fixturenames:
-        ip_addresses = metafunc.config.getoption("bastion_ips")
+        ip_addresses = metafunc.config.getini("bastion_ips")
         metafunc.parametrize("bastion_ip", ip_addresses)
