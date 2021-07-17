@@ -1,0 +1,6 @@
+[run]
+omit =
+    test_*.py,
+    *_tests.py,
+    tests.py,
+    main.py

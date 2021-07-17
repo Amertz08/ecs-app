@@ -11,7 +11,7 @@ case "$1" in
   test)
     python3.7 -m pip install -r requirements-dev.txt \
     && black . --check \
-    && pytest
+    && exec pytest --cov=. --cov-report=term-missing "${@:2}"
     ;;
   *)
     exec $1

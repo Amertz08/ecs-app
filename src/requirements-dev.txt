@@ -19,6 +19,8 @@ click==8.0.1
     #   black
     #   flask
     #   pip-tools
+coverage==5.5
+    # via pytest-cov
 distlib==0.3.2
     # via virtualenv
 filelock==3.0.12
@@ -69,7 +71,10 @@ pyparsing==2.4.7
 pytest==6.2.4
     # via
     #   -r src/requirements-dev.in
+    #   pytest-cov
     #   pytest-flask
+pytest-cov==2.12.1
+    # via -r src/requirements-dev.in
 pytest-flask==1.2.0
     # via -r src/requirements-dev.in
 pyyaml==5.4.1
@@ -83,6 +88,7 @@ toml==0.10.2
     #   pep517
     #   pre-commit
     #   pytest
+    #   pytest-cov
 tomli==1.0.4
     # via black
 typed-ast==1.4.3
