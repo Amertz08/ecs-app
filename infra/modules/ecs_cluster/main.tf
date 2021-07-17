@@ -17,6 +17,13 @@ module "ecs_asg" {
     propagate_at_launch = true
   }])
   instance_role_name = aws_iam_role.main.name
+
+  user_data = <<USER_DATA
+#!/bin/bash
+cat <<'EOF' >> /etc/ecs/ecs.config
+ECS_CLUSTER=${var.name}-cluster
+EOF
+USER_DATA
 }
 
 resource "aws_ecs_capacity_provider" "main" {

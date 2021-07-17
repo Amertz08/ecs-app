@@ -47,6 +47,7 @@ resource "aws_launch_template" "main" {
   key_name               = var.key_name
   update_default_version = true
   ebs_optimized          = var.ebs_optimized
+  user_data              = base64encode(var.user_data)
 
   monitoring {
     enabled = var.monitoring_enabled
