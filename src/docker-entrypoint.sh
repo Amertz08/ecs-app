@@ -3,7 +3,7 @@
 set -e
 
 case "$1" in
-  # To run the app you'd do `docker run -it -p 5000:5000 <img>`
+  # To run the app you'd do `docker run -it <img>`
   run)
     uwsgi --ini uwsgi.ini
     ;;
