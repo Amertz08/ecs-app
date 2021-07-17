@@ -27,3 +27,11 @@ module "ecs-app-cluster" {
   vpc_zone_identifier       = data.terraform_remote_state.vpc_state.outputs.private_subnet_ids
   public_subnet_cidr_blocks = data.terraform_remote_state.vpc_state.outputs.public_subnet_cidr_blocks
 }
+
+output "cluster_arn" {
+  value = module.ecs-app-cluster.cluster_arn
+}
+
+output "capacity_provider_arn" {
+  value = module.ecs-app-cluster.capacity_provider_arn
+}
