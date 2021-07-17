@@ -1,0 +1,18 @@
+version: "3"
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: nginx/
+    ports:
+    - "80:80"
+    volumes:
+    - uwsgi-vol:/etc/uwsgi
+  uwsgi:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+    - uwsgi-vol:/etc/uwsgi
+volumes:
+  uwsgi-vol:
