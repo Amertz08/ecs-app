@@ -17,8 +17,8 @@ resource "aws_ecs_task_definition" "app" {
       cpu : 128,
       essential : true,
       image : "vad1mo/hello-world-rest:latest",
-      memory : 128,
-      memoryReservation : 64,
+      memory : 256,
+      memoryReservation : 128,
       name : "hello-world"
     }
   ])
@@ -36,12 +36,12 @@ resource "aws_ecs_service" "app" {
   }
 
   capacity_provider_strategy {
-    capacity_provider = data.terraform_remote_state.cluster.outputs.capacity_provider_arn
+    capacity_provider = data.terraform_remote_state.cluster.outputs.capacity_provider_name
     weight            = "50"
     base              = "2"
   }
 
   lifecycle {
-    ignore_changes = [desired_count, task_definition]
+    ignore_changes = [desired_count, task_definition, health_check_grace_period_seconds]
   }
 }
