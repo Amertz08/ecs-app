@@ -15,3 +15,6 @@ sync:
 sort:
 	@sort requirements.in > sorted.in && mv sorted.in requirements.in
 	@sort requirements-dev.in > sorted.in && mv sorted.in requirements-dev.in
+
+start:
+	@python src/main.py
