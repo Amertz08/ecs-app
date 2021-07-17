@@ -13,4 +13,5 @@ RUN python3.7 -m pip install -r requirements.txt
 COPY src .
 
 EXPOSE 5000
-CMD ["python3.7", "main.py"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD ["run"]
