@@ -2,10 +2,14 @@ provider "aws" {
   region = "us-east-1"
 }
 
+variable "enable_nat" {
+  default = false
+}
+
 module "ecs_app" {
   source     = "../modules/vpc"
   name       = "ecs-app"
-  enable_nat = false
+  enable_nat = var.enable_nat
 
   cidr_block          = "10.0.0.0/16"
   public_cidr_blocks  = ["10.0.0.0/24", "10.0.2.0/24"]
