@@ -1,0 +1,5 @@
+black
+paramiko
+pip-tools
+pre-commit
+pytest
