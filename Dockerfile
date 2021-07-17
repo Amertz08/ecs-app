@@ -1,5 +1,7 @@
 FROM python:3.7-slim-buster
 
+# TODO: create a non root user for the app to run as
+
 # Install c dependencies first as these rarely change and we can take advantage
 #  of caching to keep builds quick.
 RUN apt-get update && apt-get install -y \
