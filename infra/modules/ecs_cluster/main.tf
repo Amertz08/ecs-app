@@ -16,6 +16,7 @@ module "ecs_asg" {
     value               = ""
     propagate_at_launch = true
   }])
+  instance_role_name = aws_iam_role.main.name
 }
 
 resource "aws_ecs_capacity_provider" "main" {
@@ -28,4 +29,28 @@ resource "aws_ecs_capacity_provider" "main" {
 resource "aws_ecs_cluster" "main" {
   name               = "${var.name}-cluster"
   capacity_providers = [aws_ecs_capacity_provider.main.name]
+}
+
+resource "aws_iam_role" "main" {
+  name               = "${var.name}-instance-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "instance_ecs" {
+  role       = aws_iam_role.main.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }

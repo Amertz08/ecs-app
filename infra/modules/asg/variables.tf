@@ -3,6 +3,12 @@ variable "name" {
   description = "Name of ECS Cluster"
 }
 
+variable "instance_role_name" {
+  type        = string
+  default     = ""
+  description = "IAM role name for instances"
+}
+
 variable "image_id" {
   type        = string
   default     = "ami-0dc2d3e4c0f9ebd18"

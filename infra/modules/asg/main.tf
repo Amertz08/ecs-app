@@ -35,6 +35,11 @@ resource "aws_security_group_rule" "ingress_rules" {
   description = lookup(var.ingress_rules[count.index], "description", "")
 }
 
+resource "aws_iam_instance_profile" "main" {
+  name = "${var.name}-instance-profile"
+  role = var.instance_role_name
+}
+
 resource "aws_launch_template" "main" {
   name                   = "${var.name}-lt"
   instance_type          = var.instance_type
@@ -45,6 +50,10 @@ resource "aws_launch_template" "main" {
 
   monitoring {
     enabled = var.monitoring_enabled
+  }
+
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.main.arn
   }
 
   network_interfaces {
