@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=pycharm+all,python,macos,terraform
 
 # Project
-*test.ini
+bastion.ini
 
 ### macOS ###
 # General

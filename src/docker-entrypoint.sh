@@ -10,7 +10,8 @@ case "$1" in
   # To test the app you'd do `docker run -it <img> test`
   test)
     python3.7 -m pip install -r requirements-dev.txt \
-    && black . --check
+    && black . --check \
+    && pytest
     ;;
   *)
     exec $1

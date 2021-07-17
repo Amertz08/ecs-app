@@ -2,3 +2,4 @@ black
 pip-tools
 pre-commit
 pytest
+pytest-flask
