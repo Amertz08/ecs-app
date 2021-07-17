@@ -32,6 +32,6 @@ output "cluster_arn" {
   value = module.ecs-app-cluster.cluster_arn
 }
 
-output "capacity_provider_arn" {
-  value = module.ecs-app-cluster.capacity_provider_arn
+output "capacity_provider_name" {
+  value = module.ecs-app-cluster.capacity_provider_name
 }

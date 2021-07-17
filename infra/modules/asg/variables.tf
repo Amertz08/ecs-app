@@ -84,3 +84,9 @@ variable "ingress_rules" {
   default     = []
   description = "Ingress rules"
 }
+
+variable "user_data" {
+  type        = string
+  default     = ""
+  description = "User data to send to instance"
+}
