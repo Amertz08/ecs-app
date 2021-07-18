@@ -7,3 +7,13 @@ provider "aws" {
 }
 EOF
 }
+
+remote_state {
+  backend = "s3"
+  config = {
+    bucket   = "tf-state-personal-projects"
+    key            = "ecs-app/${path_relative_to_include()}/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt = true
+  }
+}
