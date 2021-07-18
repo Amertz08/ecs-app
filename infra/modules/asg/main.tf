@@ -59,7 +59,7 @@ resource "aws_launch_template" "main" {
 
   network_interfaces {
     associate_public_ip_address = var.is_public
-    security_groups             = [aws_security_group.instance_sg.id]
+    security_groups             = concat([aws_security_group.instance_sg.id], var.extra_security_groups)
   }
 
   tags = {

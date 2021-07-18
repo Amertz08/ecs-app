@@ -90,3 +90,9 @@ variable "user_data" {
   default     = ""
   description = "User data to send to instance"
 }
+
+variable "extra_security_groups" {
+  type        = list(string)
+  default     = []
+  description = "Extra security groups to add to ASG lauch template"
+}
