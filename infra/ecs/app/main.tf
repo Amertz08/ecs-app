@@ -1,7 +1,20 @@
+terraform {
+  required_version = ">=0.12.18"
+  backend "s3" {
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/ecs/app/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
+  }
+}
+
 data "terraform_remote_state" "cluster" {
-  backend = "local"
+  backend = "s3"
   config = {
-    path = "${path.module}/../cluster/terraform.tfstate"
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/ecs/cluster/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
   }
 }
 

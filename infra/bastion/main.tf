@@ -1,7 +1,20 @@
-data "terraform_remote_state" "vpc_state" {
-  backend = "local"
+terraform {
+  required_version = ">=0.12.18"
+  backend "s3" {
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/bastion/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
+  }
+}
+
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
   config = {
-    path = "${path.module}/../vpc/terraform.tfstate"
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/vpc/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
   }
 }
 
@@ -22,6 +35,6 @@ module "bastion_asg" {
   min_size            = var.bastion_instance_count
   max_size            = 4
   ssh_cidr_blocks     = ["0.0.0.0/0"]
-  vpc_id              = data.terraform_remote_state.vpc_state.outputs.vpc_id
-  vpc_zone_identifier = data.terraform_remote_state.vpc_state.outputs.public_subnet_ids
+  vpc_id              = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_zone_identifier = data.terraform_remote_state.vpc.outputs.public_subnet_ids
 }

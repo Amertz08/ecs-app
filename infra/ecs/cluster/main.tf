@@ -1,7 +1,20 @@
-data "terraform_remote_state" "vpc_state" {
-  backend = "local"
+terraform {
+  required_version = ">=0.12.18"
+  backend "s3" {
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/ecs/cluster/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
+  }
+}
+
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
   config = {
-    path = "${path.module}/../../vpc/terraform.tfstate"
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/vpc/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
   }
 }
 
@@ -19,9 +32,9 @@ module "ecs-app-cluster" {
   max_size                  = 4
   instance_type             = "t2.micro"
   key_name                  = "adam-mbp"
-  vpc_id                    = data.terraform_remote_state.vpc_state.outputs.vpc_id
-  vpc_zone_identifier       = data.terraform_remote_state.vpc_state.outputs.private_subnet_ids
-  public_subnet_cidr_blocks = data.terraform_remote_state.vpc_state.outputs.public_subnet_cidr_blocks
+  vpc_id                    = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_zone_identifier       = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+  public_subnet_cidr_blocks = data.terraform_remote_state.vpc.outputs.public_subnet_cidr_blocks
 }
 
 output "cluster_arn" {
