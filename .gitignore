@@ -4,6 +4,8 @@
 
 # Project
 bastion.ini
+provider.tf
+
 
 ### macOS ###
 # General
