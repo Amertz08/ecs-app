@@ -7,9 +7,9 @@ terragrunt apply -auto-approve -var enable_nat=true
 cd $SCRIPT_DIR
 
 cd $SCRIPT_DIR/bastion
-terragrunt apply -auto-approve -var instance_count=2
+terragrunt apply -auto-approve -var bastion_instance_count=2
 cd $SCRIPT_DIR
 
 cd $SCRIPT_DIR/ecs/cluster
-terragrunt apply -auto-approve -var instance_count=2
+terragrunt apply -auto-approve -var cluster_instance_count=2
 cd $SCRIPT_DIR
