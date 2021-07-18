@@ -8,6 +8,10 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+data aws_ssm_parameter "amz_linux_ami" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2"
+}
+
 variable "bastion_instance_count" {
   type    = number
   default = 0
@@ -16,7 +20,7 @@ variable "bastion_instance_count" {
 module "bastion_asg" {
   source   = "../modules/asg"
   name     = "bastion"
-  image_id = "ami-0dc2d3e4c0f9ebd18"
+  image_id = data.aws_ssm_parameter.amz_linux_ami.value
 
   is_public           = true
   instance_type       = "t2.micro"

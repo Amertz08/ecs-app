@@ -1,8 +1,12 @@
+data aws_ssm_parameter "ecs_opt_ami" {
+  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"
+}
+
 module "ecs_asg" {
   source   = "../asg"
   name     = var.name
   key_name = var.key_name
-  image_id = "ami-091aa67fccd794d5f"
+  image_id = jsondecode(data.aws_ssm_parameter.ecs_opt_ami.value).image_id
 
   ssh_cidr_blocks     = var.public_subnet_cidr_blocks
   desired_capacity    = var.desired_capacity
