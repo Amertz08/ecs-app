@@ -1,7 +1,3 @@
-terraform {
-  backend "s3" {}
-}
-
 variable "enable_nat" {
   default = false
 }

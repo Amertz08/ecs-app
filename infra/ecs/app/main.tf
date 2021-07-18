@@ -1,7 +1,3 @@
-terraform {
-  backend "s3" {}
-}
-
 data "terraform_remote_state" "cluster" {
   backend = "s3"
   config = {

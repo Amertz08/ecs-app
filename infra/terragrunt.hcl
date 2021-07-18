@@ -10,6 +10,10 @@ EOF
 
 remote_state {
   backend = "s3"
+  generate = {
+    path      = "backend.tf"
+    if_exists = "overwrite"
+  }
   config = {
     bucket  = "tf-state-personal-projects"
     key     = "ecs-app/${path_relative_to_include()}/terraform.tfstate"

@@ -5,6 +5,7 @@
 # Project
 bastion.ini
 provider.tf
+backend.tf
 
 
 ### macOS ###
