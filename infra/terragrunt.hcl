@@ -21,3 +21,19 @@ remote_state {
     encrypt = true
   }
 }
+
+
+terraform {
+  extra_arguments "conditional_vars" {
+    commands = [
+      "apply",
+      "plan",
+      "import",
+      "push",
+      "refresh"
+    ]
+    optional_var_files = [
+      "${get_parent_terragrunt_dir()}/${get_env("TF_VAR_cycle", "spin-down")}.tfvars",
+    ]
+  }
+}
