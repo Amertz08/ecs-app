@@ -33,14 +33,9 @@ variable "key_name" {
   description = "Key to use for instances"
 }
 
-variable "public_subnet_cidr_blocks" {
+variable "security_groups" {
   type        = list(string)
-  description = "List of Public Subnets to allow SSH from"
-}
-
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID for security groups"
+  description = "List of security groups to apply"
 }
 
 variable "asg_tags" {

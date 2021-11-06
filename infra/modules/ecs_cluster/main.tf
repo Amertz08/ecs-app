@@ -8,12 +8,11 @@ module "ecs_asg" {
   key_name = var.key_name
   image_id = jsondecode(data.aws_ssm_parameter.ecs_opt_ami.value).image_id
 
-  ssh_cidr_blocks     = var.public_subnet_cidr_blocks
+  security_groups     = var.security_groups
   desired_capacity    = var.desired_capacity
   instance_type       = var.instance_type
   max_size            = var.max_size
   min_size            = var.min_size
-  vpc_id              = var.vpc_id
   vpc_zone_identifier = var.vpc_zone_identifier
   asg_tags = concat(var.asg_tags, [{
     key                 = "AmazonECSManaged"
