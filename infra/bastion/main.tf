@@ -42,6 +42,5 @@ module "bastion_asg" {
     data.terraform_remote_state.security_groups.outputs.public_instance_sg_id,
     data.terraform_remote_state.security_groups.outputs.ssh_self_sg_id
   ]
-  vpc_id              = data.terraform_remote_state.vpc.outputs.vpc_id
   vpc_zone_identifier = data.terraform_remote_state.vpc.outputs.public_subnet_ids
 }

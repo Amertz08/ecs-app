@@ -8,6 +8,16 @@ data "terraform_remote_state" "cluster" {
   }
 }
 
+data "terraform_remote_state" "ecr" {
+  backend = "s3"
+  config = {
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/ecs/ecr/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
+  }
+}
+
 
 resource "aws_ecs_task_definition" "app" {
   family = "flask-app"
@@ -26,7 +36,7 @@ resource "aws_ecs_service" "app" {
   name            = "flask-app"
   cluster         = data.terraform_remote_state.cluster.outputs.cluster_arn
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = 2
+  desired_count   = 0
 
   ordered_placement_strategy {
     type  = "spread"
