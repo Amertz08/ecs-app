@@ -13,10 +13,9 @@ resource "aws_ecs_task_definition" "app" {
   family = "flask-app"
   container_definitions = jsonencode([
     {
-      cpu : 128,
+      cpu : 256,
       essential : true,
       image : "vad1mo/hello-world-rest:latest",
-      memory : 256,
       memoryReservation : 128,
       name : "hello-world"
     }
