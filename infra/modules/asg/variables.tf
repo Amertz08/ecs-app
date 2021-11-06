@@ -45,11 +45,6 @@ variable "key_name" {
   description = "Key to use for instances"
 }
 
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID for security groups"
-}
-
 variable "is_public" {
   type        = bool
   default     = false
