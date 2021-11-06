@@ -1,4 +1,16 @@
+data "terraform_remote_state" "vpc" {
+  backend = "s3"
+  config = {
+    region  = "us-east-1"
+    profile = "default"
+    key     = "ecs-app/vpc/terraform.tfstate"
+    bucket  = "tf-state-personal-projects"
+  }
+}
+
 resource "aws_security_group" "public_instance" {
+  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+
   ingress {
     from_port   = 22
     protocol    = "tcp"
@@ -19,6 +31,8 @@ resource "aws_security_group" "public_instance" {
 }
 
 resource "aws_security_group" "ssh_self" {
+  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+
   ingress {
     from_port = 22
     protocol  = "tcp"
