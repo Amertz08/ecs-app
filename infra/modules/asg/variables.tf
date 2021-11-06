@@ -50,11 +50,6 @@ variable "vpc_id" {
   description = "VPC ID for security groups"
 }
 
-variable "ssh_cidr_blocks" {
-  type        = list(string)
-  description = "CIDR blocks for the SG"
-}
-
 variable "is_public" {
   type        = bool
   default     = false
@@ -79,20 +74,14 @@ variable "monitoring_enabled" {
   description = "Instance monitoring flag"
 }
 
-variable "ingress_rules" {
-  type        = list(map(string))
-  default     = []
-  description = "Ingress rules"
-}
-
 variable "user_data" {
   type        = string
   default     = ""
   description = "User data to send to instance"
 }
 
-variable "extra_security_groups" {
+variable "security_groups" {
   type        = list(string)
   default     = []
-  description = "Extra security groups to add to ASG lauch template"
+  description = "Security groups to add to ASG launch template"
 }

@@ -1,40 +1,3 @@
-resource "aws_security_group" "instance_sg" {
-  name_prefix = "${var.name}-sg-"
-  vpc_id      = var.vpc_id
-  tags = {
-    Name = "${var.name}-instance-sg"
-  }
-}
-
-resource "aws_security_group_rule" "ssh" {
-  from_port         = 22
-  protocol          = "tcp"
-  security_group_id = aws_security_group.instance_sg.id
-  to_port           = 22
-  type              = "ingress"
-  cidr_blocks       = var.ssh_cidr_blocks
-}
-
-resource "aws_security_group_rule" "outbound_all" {
-  from_port         = 0
-  protocol          = "-1"
-  security_group_id = aws_security_group.instance_sg.id
-  to_port           = 0
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-}
-
-resource "aws_security_group_rule" "ingress_rules" {
-  count             = length(var.ingress_rules)
-  type              = "ingress"
-  security_group_id = aws_security_group.instance_sg.id
-  from_port         = var.ingress_rules[count.index].from_port
-  protocol          = var.ingress_rules[count.index].protocol
-  to_port           = var.ingress_rules[count.index].to_port
-  //  cidr_blocks       = lookup(var.ingress_rules[count.index], "cidr_blocks", var.default_list)
-  description = lookup(var.ingress_rules[count.index], "description", "")
-}
-
 resource "aws_iam_instance_profile" "main" {
   name = "${var.name}-instance-profile"
   role = var.instance_role_name
@@ -59,7 +22,7 @@ resource "aws_launch_template" "main" {
 
   network_interfaces {
     associate_public_ip_address = var.is_public
-    security_groups             = concat([aws_security_group.instance_sg.id], var.extra_security_groups)
+    security_groups             = var.security_groups
   }
 
   tags = {
