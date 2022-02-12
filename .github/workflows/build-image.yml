@@ -1,4 +1,7 @@
 name: build-image
+env:
+  tf_version: 'latest'
+  tg_version: 'latest'
 on:
   push:
     branches:
@@ -61,10 +64,10 @@ jobs:
       - name: "Terragrunt Init"
         uses: the-commons-project/terragrunt-github-actions@master
         with:
-          tf_actions_version: "1.1.4"
-          tg_actions_version: "0.36.1"
-          tf_actions_subcommand: "init"
-          tf_actions_working_dir: "infra/"
+          tf_actions_version: ${{ env.tf_version }}
+          tg_actions_version: ${{ env.tg_version }}
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: "infra/ecs/app"
           tf_actions_comment: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
