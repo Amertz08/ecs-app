@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
     # rm -rf cleans up a bunch of files apt-get leaves during installs that are unnecessary.
 
+RUN mkdir /etc/uwsgi
 RUN mkdir /code
 WORKDIR /code
 
