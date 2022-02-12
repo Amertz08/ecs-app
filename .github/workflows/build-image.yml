@@ -25,6 +25,6 @@ jobs:
           ECR_REPOSITORY: flask-app
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY-uwsgi:$IMAGE_TAG .
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY-wsgi:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY-uwsgi:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY-uwsgi --all-tags
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:uwsgi-$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:uwsgi-$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:uwsgi-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags

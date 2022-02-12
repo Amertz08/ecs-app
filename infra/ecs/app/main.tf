@@ -25,7 +25,7 @@ resource "aws_ecs_task_definition" "app" {
     {
       cpu : 256,
       essential : true,
-      image : "${var.image_name}:latest",
+      image : "${var.image_name}:uwsgi-latest",
       memoryReservation : 128,
       name : "flask-app"
       logConfiguration: {
