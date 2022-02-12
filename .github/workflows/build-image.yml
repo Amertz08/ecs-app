@@ -2,6 +2,7 @@ name: build-image
 env:
   tf_version: 'latest'
   tg_version: 'latest'
+  tf_working_dir: 'infra'
 on:
   push:
     branches:
@@ -67,7 +68,7 @@ jobs:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
           tf_actions_subcommand: 'init'
-          tf_actions_working_dir: "infra/ecs/app"
+          tf_actions_working_dir: ${{ env.tf_working_dir }}
           tf_actions_comment: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
