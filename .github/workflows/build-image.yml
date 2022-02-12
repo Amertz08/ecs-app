@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "feature/**"
+      - "!master"
 jobs:
   build-image:
     runs-on: ubuntu-latest
