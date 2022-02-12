@@ -27,9 +27,21 @@ resource "aws_ecs_task_definition" "app" {
       essential : true,
       image : "${var.image_name}:latest",
       memoryReservation : 128,
-      name : "hello-world"
+      name : "flask-app"
+      logConfiguration: {
+          logDriver: "awslogs",
+          "options": {
+            "awslogs-group": aws_cloudwatch_log_group.app_logs.name,
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "uwsgi"
+          }
+        }
     }
   ])
+}
+
+resource "aws_cloudwatch_log_group" "app_logs" {
+  name = "flask-app"
 }
 
 resource "aws_ecs_service" "app" {
