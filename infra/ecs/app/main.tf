@@ -25,11 +25,63 @@ resource "aws_ecs_task_definition" "app" {
     {
       cpu : 256,
       essential : true,
-      image : "vad1mo/hello-world-rest:latest",
+      image : "${var.image_name}:uwsgi-latest",
       memoryReservation : 128,
-      name : "hello-world"
+      name : "flask-app",
+      mountPoints = [
+        {
+          containerPath = "/etc/uwsgi"
+          sourceVolume = "uwsgi-vol"
+        }
+      ],
+      logConfiguration: {
+          logDriver: "awslogs",
+          "options": {
+            "awslogs-group": aws_cloudwatch_log_group.app_logs.name,
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "uwsgi"
+          }
+        }
+    },
+    {
+      cpu : 256,
+      essential : true,
+      image : "${var.image_name}:nginx-latest",
+      memoryReservation : 128,
+      name : "nginx",
+      portMappings = [
+        {
+          containerPort = 80,
+          hostPort = 0
+        }
+      ],
+      mountPoints = [
+        {
+          containerPath = "/etc/uwsgi"
+          sourceVolume = "uwsgi-vol"
+        }
+      ],
+      logConfiguration: {
+          logDriver: "awslogs",
+          "options": {
+            "awslogs-group": aws_cloudwatch_log_group.app_logs.name,
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "nginx"
+          }
+        }
     }
   ])
+
+  volume {
+    name = "uwsgi-vol"
+    docker_volume_configuration {
+      scope = "task"
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "app_logs" {
+  name = "flask-app"
 }
 
 resource "aws_ecs_service" "app" {
@@ -50,6 +102,6 @@ resource "aws_ecs_service" "app" {
   }
 
   lifecycle {
-    ignore_changes = [desired_count, task_definition, health_check_grace_period_seconds]
+    ignore_changes = [desired_count, health_check_grace_period_seconds]
   }
 }

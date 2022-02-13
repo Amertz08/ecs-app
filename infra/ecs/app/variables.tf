@@ -1,4 +1,4 @@
-//variable "image_tag" {
-//  type = string
-//  description = "App Image Tag"
-//}
+variable "image_name" {
+  type = string
+  description = "App Image Name"
+}
