@@ -62,6 +62,8 @@ jobs:
       - build-nginx-image
       - build-uwsgi-image
     steps:
+      - name: blah
+        run: ls -l
       - name: "Terragrunt Init"
         uses: the-commons-project/terragrunt-github-actions@master
         with:
